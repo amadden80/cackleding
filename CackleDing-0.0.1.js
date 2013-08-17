@@ -1,5 +1,9 @@
 
 
+// Cack
+var cack = cack || {URL: "http://www.CackleDing.com"};
+
+
 
 // The "Use Now" functions
 cack.ding = cack.ding || {};
@@ -22,6 +26,18 @@ cack.ding = cack.ding || {};
   // "Ding! * n"
   cack.ding.n =  function(n){
 
+    var freq = 440
+    var seconds = 0.09
+    var fs = 8000 
+    var amplitude = 0.75
+    var storage = "blob"
+
+    var autoplay = true
+
+    var blob_url = cack.gen.tone(freq, seconds, fs, amplitude)
+
+    cack.play(blob_url, n, seconds*1000+10)
+    
   }
 
 
@@ -36,16 +52,20 @@ cack.classy = cack.classy || {};
 
 
 
-
-
-
 // The html functions
 cack.tag = cack.tag || {};
+cack.tag.audio = cack.tag.audio || {};
+cack.tag.embed = cack.tag.embed || {};
 
   cack.tag.audio.base64 = function(data, autoplay){
     autoplay = autoplay || true
     var tag = "<audio autoplay='" + autoplay + "' id='ajm-hello-ajm'><source src='data:audio/wav;base64,%s'></source></audio>" % data
-      '<img alt="sample" src="data:image/png;base64,' + data + '">'
+    return tag
+  }
+
+  cack.tag.audio.blob = function(blob_url, autoplay){
+    autoplay = autoplay || true
+    var tag = "<audio autoplay='" + autoplay + "' id='ajm-hello-ajm'><source src='%s'></source></audio>" % blob_url
     return tag
   }
 
@@ -83,6 +103,7 @@ cack.file = cack.file || {};
 cack.gen = cack.gen || {};
 
   cack.gen.tone =  function(freq, seconds, fs, amplitude, options){
+    options = options || {}
     storage = options["storage"] || "blob"
     var buffer = cack.make_tone(freq, seconds, fs, amplitude);
     buffer = cack.applyFades(buffer, 100);
@@ -123,8 +144,7 @@ cack.gen = cack.gen || {};
 
 
 
-// The CaclkeDing Engine and Helpers
-var cack = cack || {}
+
 
   cack.TWO_PI = Math.PI * 2.0
 
@@ -304,4 +324,31 @@ var cack = cack || {}
   cack.not_happy = function(reason){
     console.log("CackleDing: " + reason)
   }
+
+
+
+
+  cack.play = function(source, n_times, delay){
+    n_times = n_times || 1
+
+    var _body = document.getElementsByTagName('body') [0];
+    var Sonifizer_audio = document.createElement('audio');
+    Sonifizer_audio.controls = false;
+    Sonifizer_audio.autoplay = true;
+    var Sonifizer_source = document.createElement('source');
+    Sonifizer_source.src = source;
+    Sonifizer_audio.appendChild(Sonifizer_source);
+    _body.appendChild(Sonifizer_audio);
+
+      if (n_times > 1){
+        delay = delay || 1000
+
+        setTimeout(function(){
+          cack.play(source, n_times-1, delay)
+        }, delay )
+      }
+  }
+
+
+
 
