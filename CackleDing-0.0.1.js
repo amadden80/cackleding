@@ -146,7 +146,7 @@ cack.gen = cack.gen || {};
 
 
 
-  cack.TWO_PI = Math.PI * 2.0
+  cack.TWO_PI = Math.PI * 2.0;
 
   cack.range = function(start, count){
     var vector = [];
@@ -157,10 +157,10 @@ cack.gen = cack.gen || {};
   }  
 
   cack.linspace = function(lowNum, highNum, numSamples){
-    var aToB = cack.range(0, numSamples);
+    var aToB = new Array(numSamples);
     var dif = highNum - lowNum;
     for (var i = 0; i < numSamples; i++) {
-        aToB[i] = ((aToB[i]/(numSamples-1)) * dif) + lowNum;
+        aToB[i] = ((i/(numSamples-1)) * dif) + lowNum;
     }
     return aToB;
   }
@@ -175,6 +175,7 @@ cack.gen = cack.gen || {};
     return cumSumVect;
   }
 
+  // The input arguments are being modified. Do we want to do this?
   cack.normalize = function(array, newMax){
     newMax = newMax || 0.9999;
     var maxVal = 0.0;
@@ -188,7 +189,7 @@ cack.gen = cack.gen || {};
   }
 
   cack.applyFadeIn = function(array, sampsIn){
-    var ramp = cack.linspace(0.0, 1.0, sampsIn);
+    var ramp = cack.linspace(0.0, 1.0, Math.min(sampsIn,array.length));
     for (i = 0; i < ramp.length; i++) {
       array[i] = (array[i] * ramp[i]);
     }
@@ -196,7 +197,7 @@ cack.gen = cack.gen || {};
   }
 
   cack.applyFadeOut = function(array, sampsIn){
-    var ramp = cack.linspace(0.0, 1.0, sampsIn);
+    var ramp = cack.linspace(0.0, 1.0, Math.min(sampsIn,array.length));
     var arrayLength = array.length;
     for (i = 0; i < ramp.length; i++) {
       array[arrayLength-i-1] = (array[arrayLength-i-1] * ramp[i]);
