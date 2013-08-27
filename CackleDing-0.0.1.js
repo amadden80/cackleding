@@ -40,7 +40,19 @@ cack.ding = cack.ding || {};
     
   }
 
+// CSS class associations
+$(document).ready( function () {
+  $(".ding").click ( function () {
+    cack.ding.one();
+  });
+});
 
+// window.onload = function () {
+//   var clickdings = document.getElementsByClassName("clickding");
+//   for (var i=clickdings.length-1; i>=0; i--) {
+//     clickdings[i].onclick = function () {cack.ding.one()};
+//   }
+// }
 
 
 // **** TODO
