@@ -45,6 +45,11 @@ $(document).ready( function () {
   $(".ding").click ( function () {
     cack.ding.one();
   });
+
+  $(".dingding").click ( function () {
+    cack.ding.two();
+  });
+
 });
 
 // window.onload = function () {
